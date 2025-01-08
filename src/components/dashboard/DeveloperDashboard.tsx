@@ -3,7 +3,46 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Github, Briefcase, Send } from "lucide-react";
+import { Github, Briefcase, Send, Search } from "lucide-react";
+import { IdeaCard } from "./developer/IdeaCard";
+import { ApplicationCard } from "./developer/ApplicationCard";
+
+// Mock data for demonstration
+const mockIdeas = [
+  {
+    id: "1",
+    title: "AI-Powered Healthcare Platform",
+    description: "Building a revolutionary healthcare platform that uses AI to predict and prevent diseases.",
+    requiredSkills: ["React", "Python", "TensorFlow"],
+    equity: "15-20%",
+    compensationType: "Equity + Salary"
+  },
+  {
+    id: "2",
+    title: "Sustainable E-commerce Platform",
+    description: "Creating an eco-friendly marketplace for sustainable products.",
+    requiredSkills: ["React", "Node.js", "PostgreSQL"],
+    equity: "10-15%",
+    compensationType: "Equity Only"
+  }
+];
+
+const mockApplications = [
+  {
+    id: "1",
+    ideaTitle: "AI-Powered Healthcare Platform",
+    status: "accepted" as const,
+    appliedDate: "2024-02-20",
+    founderName: "John Doe",
+    whatsappNumber: "+1234567890"
+  },
+  {
+    id: "2",
+    ideaTitle: "Sustainable E-commerce Platform",
+    status: "pending" as const,
+    appliedDate: "2024-02-22"
+  }
+];
 
 export const DeveloperDashboard = () => {
   const [activeTab, setActiveTab] = useState<"ideas" | "applications" | "profile">("profile");
@@ -16,6 +55,8 @@ export const DeveloperDashboard = () => {
     whatsapp: ""
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleProfileUpdate = (field: keyof typeof devProfile, value: string) => {
     setDevProfile(prev => ({ ...prev, [field]: value }));
   };
@@ -24,14 +65,18 @@ export const DeveloperDashboard = () => {
     console.log("Saving developer profile:", devProfile);
   };
 
+  const handleApplyToIdea = (ideaId: string) => {
+    console.log("Applying to idea:", ideaId);
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Welcome, raksha!</h1>
-            <p className="text-muted-foreground">You are logged in as a developer</p>
+            <h1 className="text-2xl font-bold text-foreground">Welcome, Developer!</h1>
+            <p className="text-muted-foreground">Find your next startup opportunity</p>
           </div>
           <Button variant="outline" className="bg-secondary/50 hover:bg-secondary">Logout</Button>
         </div>
@@ -76,12 +121,15 @@ export const DeveloperDashboard = () => {
                   <label className="block text-sm font-medium mb-2">
                     GitHub Username
                   </label>
-                  <Input
-                    placeholder="your-github-username"
-                    value={devProfile.githubUsername}
-                    onChange={(e) => handleProfileUpdate("githubUsername", e.target.value)}
-                    className="bg-secondary/50"
-                  />
+                  <div className="relative">
+                    <Input
+                      placeholder="your-github-username"
+                      value={devProfile.githubUsername}
+                      onChange={(e) => handleProfileUpdate("githubUsername", e.target.value)}
+                      className="bg-secondary/50 pl-10"
+                    />
+                    <Github className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  </div>
                 </div>
 
                 <div>
@@ -156,24 +204,39 @@ export const DeveloperDashboard = () => {
         )}
 
         {activeTab === "ideas" && (
-          <Card className="border-border/10 bg-card/50">
-            <CardHeader>
-              <CardTitle className="text-xl">Available Startup Ideas</CardTitle>
-              <p className="text-muted-foreground">
-                Find exciting startup opportunities to join as a technical co-founder
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2 mb-6">
-                <Input 
-                  placeholder="Search by skills, industry, or keywords"
-                  className="bg-secondary/50"
-                />
-                <Button>Search</Button>
-              </div>
-              <p className="text-muted-foreground">No startup ideas available at the moment.</p>
-            </CardContent>
-          </Card>
+          <div className="space-y-6">
+            <Card className="border-border/10 bg-card/50">
+              <CardHeader>
+                <CardTitle className="text-xl">Available Startup Ideas</CardTitle>
+                <p className="text-muted-foreground">
+                  Find exciting startup opportunities to join as a technical co-founder
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2 mb-6">
+                  <div className="relative flex-1">
+                    <Input 
+                      placeholder="Search by skills, industry, or keywords"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="bg-secondary/50 pl-10"
+                    />
+                    <Search className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <Button>Search</Button>
+                </div>
+                <div className="grid gap-6 md:grid-cols-2">
+                  {mockIdeas.map((idea) => (
+                    <IdeaCard
+                      key={idea.id}
+                      {...idea}
+                      onApply={() => handleApplyToIdea(idea.id)}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {activeTab === "applications" && (
@@ -185,7 +248,14 @@ export const DeveloperDashboard = () => {
               </p>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">You haven't applied to any startup ideas yet.</p>
+              <div className="grid gap-6">
+                {mockApplications.map((application) => (
+                  <ApplicationCard
+                    key={application.id}
+                    {...application}
+                  />
+                ))}
+              </div>
             </CardContent>
           </Card>
         )}
