@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { github, briefcase, send } from "lucide-react";
+import { Github, Briefcase, Send } from "lucide-react";
 
 export const DeveloperDashboard = () => {
   const [activeTab, setActiveTab] = useState<"ideas" | "applications" | "profile">("profile");

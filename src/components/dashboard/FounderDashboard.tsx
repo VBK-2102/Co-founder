@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { briefcase, layers, phone, save } from "lucide-react";
+import { Briefcase, Layers, Phone, Save } from "lucide-react";
 
 export const FounderDashboard = () => {
   const [activeTab, setActiveTab] = useState<"ideas" | "applications" | "profile">("profile");
