@@ -12,6 +12,7 @@ export const DeveloperDashboard = () => {
     skills: "",
     experience: "",
     compensation: "",
+    portfolioUrl: "",
     whatsapp: ""
   });
 
@@ -20,39 +21,41 @@ export const DeveloperDashboard = () => {
   };
 
   const handleSaveProfile = () => {
-    // TODO: Implement profile saving logic
     console.log("Saving developer profile:", devProfile);
   };
 
   return (
     <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Developer Dashboard</h1>
-            <p className="text-muted-foreground">Find your next startup opportunity</p>
+            <h1 className="text-2xl font-bold text-foreground">Welcome, raksha!</h1>
+            <p className="text-muted-foreground">You are logged in as a developer</p>
           </div>
-          <Button variant="outline">Logout</Button>
+          <Button variant="outline" className="bg-secondary/50 hover:bg-secondary">Logout</Button>
         </div>
 
         {/* Navigation */}
-        <div className="flex space-x-4 border-b border-border">
+        <div className="flex space-x-4 bg-secondary/20 p-1 rounded-lg">
           <Button
-            variant={activeTab === "ideas" ? "default" : "ghost"}
+            variant={activeTab === "ideas" ? "secondary" : "ghost"}
             onClick={() => setActiveTab("ideas")}
+            className="flex-1"
           >
             Browse Ideas
           </Button>
           <Button
-            variant={activeTab === "applications" ? "default" : "ghost"}
+            variant={activeTab === "applications" ? "secondary" : "ghost"}
             onClick={() => setActiveTab("applications")}
+            className="flex-1"
           >
             My Applications
           </Button>
           <Button
-            variant={activeTab === "profile" ? "default" : "ghost"}
+            variant={activeTab === "profile" ? "secondary" : "ghost"}
             onClick={() => setActiveTab("profile")}
+            className="flex-1"
           >
             Profile
           </Button>
@@ -60,11 +63,11 @@ export const DeveloperDashboard = () => {
 
         {/* Content */}
         {activeTab === "profile" && (
-          <Card className="border-border/50">
+          <Card className="border-border/10 bg-card/50">
             <CardHeader>
               <CardTitle className="text-xl">Developer Profile</CardTitle>
               <p className="text-muted-foreground">
-                Complete your profile to connect with founders
+                Complete your profile to stand out to founders
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -77,40 +80,55 @@ export const DeveloperDashboard = () => {
                     placeholder="your-github-username"
                     value={devProfile.githubUsername}
                     onChange={(e) => handleProfileUpdate("githubUsername", e.target.value)}
+                    className="bg-secondary/50"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Skills
+                    Technical Skills
                   </label>
                   <Input
-                    placeholder="e.g., React, Node.js, Python, AWS"
+                    placeholder="e.g., React, Node.js, AWS (comma separated)"
                     value={devProfile.skills}
                     onChange={(e) => handleProfileUpdate("skills", e.target.value)}
+                    className="bg-secondary/50"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Experience
+                    Professional Experience
                   </label>
                   <Textarea
-                    placeholder="Share your technical experience and achievements..."
+                    placeholder="Share your relevant work experience..."
                     value={devProfile.experience}
                     onChange={(e) => handleProfileUpdate("experience", e.target.value)}
-                    className="min-h-[100px]"
+                    className="min-h-[100px] bg-secondary/50"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Compensation Expectations
+                    Preferred Compensation
                   </label>
                   <Input
-                    placeholder="e.g., Equity %, Monthly salary, or both"
+                    placeholder="e.g., Equity range, salary expectations"
                     value={devProfile.compensation}
                     onChange={(e) => handleProfileUpdate("compensation", e.target.value)}
+                    className="bg-secondary/50"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Portfolio URL
+                  </label>
+                  <Input
+                    placeholder="https://your-portfolio.com"
+                    value={devProfile.portfolioUrl}
+                    onChange={(e) => handleProfileUpdate("portfolioUrl", e.target.value)}
+                    className="bg-secondary/50"
                   />
                 </div>
 
@@ -122,6 +140,7 @@ export const DeveloperDashboard = () => {
                     placeholder="+1234567890"
                     value={devProfile.whatsapp}
                     onChange={(e) => handleProfileUpdate("whatsapp", e.target.value)}
+                    className="bg-secondary/50"
                   />
                 </div>
 
@@ -132,6 +151,41 @@ export const DeveloperDashboard = () => {
                   Save Profile
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {activeTab === "ideas" && (
+          <Card className="border-border/10 bg-card/50">
+            <CardHeader>
+              <CardTitle className="text-xl">Available Startup Ideas</CardTitle>
+              <p className="text-muted-foreground">
+                Find exciting startup opportunities to join as a technical co-founder
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-2 mb-6">
+                <Input 
+                  placeholder="Search by skills, industry, or keywords"
+                  className="bg-secondary/50"
+                />
+                <Button>Search</Button>
+              </div>
+              <p className="text-muted-foreground">No startup ideas available at the moment.</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {activeTab === "applications" && (
+          <Card className="border-border/10 bg-card/50">
+            <CardHeader>
+              <CardTitle className="text-xl">My Applications</CardTitle>
+              <p className="text-muted-foreground">
+                Track the status of your applications
+              </p>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">You haven't applied to any startup ideas yet.</p>
             </CardContent>
           </Card>
         )}
